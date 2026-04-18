@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MICO Cooling Corp — Staff Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy-deep:   #0b1526;
+  --navy:        #0d2247;
+  --navy-mid:    #1a3a6b;
+  --navy-light:  #eaecf5;
+  --silver:      #8a9ab5;
+  --silver-mid:  #bcc7d8;
+  --silver-light:#dde3ef;
+  --white:       #ffffff;
+  --accent:      #c8a94a;
+  --accent-dark: #a8891a;
+  --gray-100:    #eef1f6;
+  --gray-500:    #7a8fac;
+  --gray-700:    #3a4d65;
+  --gray-900:    #111d30;
+  --red:         #c0392b;
+  --shadow-lg:   0 12px 40px rgba(13,34,71,.18), 0 4px 12px rgba(0,0,0,.1);
+  --shadow-card: 0 6px 28px rgba(13,34,71,.10), 0 1px 4px rgba(0,0,0,.06);
+  --radius:      10px;
+  --radius-sm:   6px;
+  --radius-lg:   14px;
+  --grad-nav:    linear-gradient(135deg, #0b1526 0%, #0d2247 60%, #1a3a6b 100%);
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: var(--gray-900);
+}
+
+body {
+  background: var(--grad-nav);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+/* ── Subtle background grid texture ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ── Login Card ── */
+.login-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px rgba(0,0,0,.45), 0 4px 16px rgba(0,0,0,.2);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Gold accent line at top */
+.login-card::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(135deg, #c8a94a 0%, #e0c060 100%);
+}
+
+.card-inner {
+  padding: 44px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── Logo + Brand ── */
+.login-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.login-appname {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.login-divider {
+  width: 48px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--silver-mid), transparent);
+  margin-bottom: 20px;
+}
+
+.login-heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.login-sub {
+  font-size: 12px;
+  color: var(--gray-500);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 280px;
+}
+
+/* ── Google Button ── */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 24px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--silver-light);
+  background: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-900);
+  cursor: pointer;
+  transition: all .18s;
+  box-shadow: 0 2px 8px rgba(13,34,71,.07);
+  letter-spacing: .1px;
+  margin-bottom: 12px;
+}
+.btn-google:hover {
+  border-color: var(--silver-mid);
+  background: var(--gray-100);
+  box-shadow: 0 4px 16px rgba(13,34,71,.1);
+  transform: translateY(-1px);
+}
+.btn-google:active { transform: translateY(0); }
+.btn-google svg { flex-shrink: 0; }
+
+/* ── Primary Gold CTA (shown in some states) ── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: linear-gradient(160deg, #e0c060 0%, #c8a94a 45%, #a8880f 100%);
+  color: rgba(50,32,0,.82);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .18s;
+  box-shadow: 0 3px 12px rgba(200,169,74,.45), inset 0 1px 0 rgba(255,255,255,.25);
+}
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(200,169,74,.55), inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+/* ── Status States ── */
+.login-status {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  width: 100%;
+  padding: 8px 0;
+}
+.login-status.visible { display: flex; }
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--navy-light);
+  border-top-color: var(--navy-mid);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.status-text {
+  font-size: 13px;
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+.status-sub {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: -8px;
+}
+
+.error-msg {
+  display: none;
+  background: #fdecea;
+  border: 1px solid rgba(192,57,43,.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--red);
+  text-align: center;
+  width: 100%;
+  margin-bottom: 4px;
+}
+.error-msg.visible { display: block; }
+
+/* ── Footer ── */
+.login-footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--silver-light);
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  color: var(--gray-500);
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+/* ── Domain hint below card ── */
+.login-domain-hint {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+  text-align: center;
+  letter-spacing: .5px;
+}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="card-inner">
+    <img class="login-logo" src="../mico-logo.png" alt="MICO Cooling Corp">
+    <div class="login-appname">Staff Portal</div>
+    <div class="login-divider"></div>
+
+    <!-- Default: sign-in view -->
+    <div id="view-signin">
+      <h1 class="login-heading">Welcome back</h1>
+      <p class="login-sub">Sign in with your MICO Google Workspace account to access internal tools.</p>
+
+      <div id="error-msg" class="error-msg"></div>
+
+      <button class="btn-google" id="btn-google" onclick="signInWithGoogle()">
+        <!-- Google G logo -->
+        <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+          <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+    </div>
+
+    <!-- Loading / redirecting state -->
+    <div id="view-loading" class="login-status">
+      <div class="spinner"></div>
+      <div class="status-text" id="loading-text">Checking session…</div>
+      <div class="status-sub" id="loading-sub"></div>
+    </div>
+
+    <div class="login-footer">MICO Cooling Corp &nbsp;·&nbsp; Internal Tools</div>
+  </div>
+</div>
+
+<div class="login-domain-hint">login.micocc.net</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── Config ────────────────────────────────────────────────────────────────────
+const AUTH_URL  = 'https://kbqkwlhmkvwnutqkcstx.supabase.co';
+const AUTH_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImticWt3bGhta3Z3bnV0cWtjc3R4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDY0ODUsImV4cCI6MjA5MTY4MjQ4NX0.Fxhi8kP391JBOMNuQvRpT7p4ssf-z5oxv-ooslrsEj4';
+const DEFAULT_REDIRECT = 'https://dashboard.micocc.net';
+
+const authClient = window.supabase.createClient(AUTH_URL, AUTH_KEY, {
+  auth: {
+    storageKey: 'mico-auth',
+    detectSessionInUrl: true,
+    autoRefreshToken: true,
+    persistSession: true
+  }
+});
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function getRedirectTarget() {
+  const params = new URLSearchParams(window.location.search);
+  const r = params.get('redirect');
+  // Basic safety: only allow micocc.net destinations
+  if (r && r.startsWith('https://') && r.includes('micocc.net')) return r;
+  return DEFAULT_REDIRECT;
+}
+
+function showLoading(text, sub = '') {
+  document.getElementById('view-signin').style.display = 'none';
+  const v = document.getElementById('view-loading');
+  v.classList.add('visible');
+  document.getElementById('loading-text').textContent = text;
+  document.getElementById('loading-sub').textContent = sub;
+}
+
+function showError(msg) {
+  document.getElementById('view-signin').style.display = '';
+  document.getElementById('view-loading').classList.remove('visible');
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+
+function buildTokenHash(session) {
+  const expiresIn = session.expires_in
+    || Math.max(0, Math.floor(session.expires_at - Date.now() / 1000));
+  return `#access_token=${encodeURIComponent(session.access_token)}`
+    + `&refresh_token=${encodeURIComponent(session.refresh_token)}`
+    + `&expires_in=${expiresIn}`
+    + `&token_type=bearer`;
+}
+
+function redirectToApp(session) {
+  const target = getRedirectTarget();
+  showLoading('Redirecting…', target.replace('https://', ''));
+  // Strip any existing hash from target, then append our token hash
+  const base = target.split('#')[0];
+  window.location.replace(base + buildTokenHash(session));
+}
+
+// ── Google OAuth ──────────────────────────────────────────────────────────────
+async function signInWithGoogle() {
+  document.getElementById('btn-google').disabled = true;
+  showLoading('Connecting to Google…', 'You will be redirected to sign in');
+
+  // Preserve the redirect param in the OAuth return URL
+  const returnUrl = window.location.origin + window.location.pathname + window.location.search;
+
+  const { error } = await authClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: returnUrl,
+      queryParams: { hd: 'micocc.net' }  // Hint: restrict to MICO domain
+    }
+  });
+
+  if (error) {
+    showError('Could not start sign-in: ' + error.message);
+    document.getElementById('btn-google').disabled = false;
+  }
+}
+
+// ── Auth State Listener ───────────────────────────────────────────────────────
+authClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    redirectToApp(session);
+  }
+  if (event === 'SIGNED_OUT') {
+    document.getElementById('view-signin').style.display = '';
+    document.getElementById('view-loading').classList.remove('visible');
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async function init() {
+  showLoading('Checking session…');
+
+  try {
+    const { data: { session }, error } = await authClient.auth.getSession();
+
+    if (error) {
+      showError('Session error: ' + error.message);
+      return;
+    }
+
+    if (session) {
+      // Already authenticated — send straight to the app
+      redirectToApp(session);
+      return;
+    }
+
+    // No session — show the sign-in button
+    document.getElementById('view-signin').style.display = '';
+    document.getElementById('view-loading').classList.remove('visible');
+
+  } catch (err) {
+    showError('Unexpected error. Please refresh and try again.');
+    console.error('[MICO Auth]', err);
+  }
+})();
+</script>
+</body>
+</html>
