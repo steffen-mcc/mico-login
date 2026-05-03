@@ -321,8 +321,11 @@ const authClient = window.supabase.createClient(AUTH_URL, AUTH_KEY, {
 function getRedirectTarget() {
   const params = new URLSearchParams(window.location.search);
   const r = params.get('redirect');
-  // Basic safety: only allow micocc.net destinations
-  if (r && r.startsWith('https://') && r.includes('micocc.net')) return r;
+  // Strict hostname check — must be exactly micocc.net or a *.micocc.net subdomain
+  try {
+    const url = new URL(r);
+    if (url.protocol === 'https:' && (url.hostname === 'micocc.net' || url.hostname.endsWith('.micocc.net'))) return r;
+  } catch (e) { /* invalid URL — fall through to default */ }
   return DEFAULT_REDIRECT;
 }
 
