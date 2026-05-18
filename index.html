@@ -403,14 +403,22 @@ authClient.auth.onAuthStateChange((event, session) => {
     const { data: { session }, error } = await authClient.auth.getSession();
 
     if (error) {
-      showError('Session error: ' + error.message);
+      showError('Something went wrong. Please refresh and try again.');
+      console.error('[MICO Auth] getSession error:', error);
       return;
     }
 
     if (session) {
-      // Already authenticated — send straight to the app
-      redirectToApp(session);
-      return;
+      // Verify the session is still valid server-side before redirecting.
+      // An expired/invalid session in localStorage causes a redirect loop;
+      // getUser() catches it by making a real network call.
+      const { data: { user }, error: userErr } = await authClient.auth.getUser();
+      if (user && !userErr) {
+        redirectToApp(session);
+        return;
+      }
+      // Session is stale or invalid — clear it locally and show sign-in
+      await authClient.auth.signOut({ scope: 'local' });
     }
 
     // No session — show the sign-in button
