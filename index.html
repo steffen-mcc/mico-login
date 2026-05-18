@@ -385,10 +385,10 @@ async function signInWithGoogle() {
 }
 
 // ── Auth State Listener ───────────────────────────────────────────────────────
+// NOTE: SIGNED_IN is intentionally NOT handled here. init() handles all
+// session validation and redirects. Handling it here races with the getUser()
+// check in init() and causes redirect loops when a stale token is in the URL.
 authClient.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_IN' && session) {
-    redirectToApp(session);
-  }
   if (event === 'SIGNED_OUT') {
     document.getElementById('view-signin').style.display = '';
     document.getElementById('view-loading').classList.remove('visible');
